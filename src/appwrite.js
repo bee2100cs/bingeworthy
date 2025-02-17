@@ -10,6 +10,7 @@ const client = new Client()
 
 const database = new Databases(client);
 
+// Function to update search count
 export const updateSearchCount = async (searchTerm, movie) => {
     // 1. Use Appwrite SDK to check if the search term exists in DB
     try {
@@ -39,4 +40,18 @@ export const updateSearchCount = async (searchTerm, movie) => {
 
 
 
+}
+
+// Function to get trending movies
+export const getTrendingMovies = async () => {
+    try {
+        const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
+            Query.limit(5),
+            Query.orderDesc("count")
+        ])
+
+        return result.documents;
+    } catch (error) {
+        console.error("Error getting Trending Movies", error);
+    }
 }
